@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <title>Sign Up - GaiNS.ai</title>
+    <!-- Sign Up Form -->
+    <h1 style="text-align: center;" >Sign Up for GaiNS.ai</h1>
+    <form id="signupForm" method="POST" action="{% url 'signup' %}">
+        {%csrf_token%}
+        <label for="fname">First Name:</label>
+        <input type="text" id="fname" name="first_name"required>
+        <label for="lname">Last Name:</label>
+        <input type="text" id="lname" name="last_name"required>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"required>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password1"required>
+        <label for="password">Password Confirmation:</label>
+        <input type="password" id="password" name="password2"required>
+        <button type="submit">Sign Up</button>
+    </form>
+    <!-- Scripts -->
+    <script src="{% static 'script.js' %}"></script>
+{% endblock %}

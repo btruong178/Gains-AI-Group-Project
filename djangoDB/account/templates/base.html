@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static 'script.js' %}"></script>
+    <script src="{% static 'Key.js' %}"></script>
+</head>
+
+<!-- Header -->
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark-#333">
+        <a class="navbar-brand" href="{% url 'index' %}">    
+        <img src="{% static 'GaiNs_icon.jpeg'%}" style="width: 30px; height: 30px;">GaiNS.ai</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'community' %}">Community</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'checkin' %}">Check-in</a>
+                <li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'history' %}">History</a>
+                <li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'music' %}">Music</a>
+                </li>
+                    <img id="icon" src="{% static 'Mute_Icon.png' %}" alt="Icon">
+                    <audio id="music" src="{% static 'music/Rocky Balboa-Theme Song.mp3' %}"></audio>
+                </li>
+            </ul>
+            {% if user.is_authenticated %}
+            <div class="nav-buttons mr-3"> 
+                <a class="btn btn-outline-light">Logged In as<br>{{ request.user.username }}</a>
+            </div>
+            <div class="nav-buttons mr-3"> 
+                <a href={% url 'logout' %} class="btn btn-outline-light">Logout</a>
+            </div>
+            {% else %}
+            <div class="nav-buttons mr-3"> 
+                <a href={% url 'signup' %} class="btn btn-custom mr-2" style="background-color: #9c56e3;">Sign Up</a>
+                <a href={% url 'login' %} class="btn btn-outline-light">Login</a>
+            </div>
+            {% endif %}
+            <div id="themeToggle" class="fas fa-adjust fa-lg text-primary; " style="cursor: pointer; " onclick="toggleTheme()"></div>
+        </div>
+    </nav>
+</header>
+
+      <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-warning" role="alert" style="text-align: center;">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+      </div>
+      {% block content %}
+
+      {% endblock %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Define an array of icon sources
+            var iconSources = ["{% static 'Mute_Icon.png' %}", "{% static 'Speaker_Icon.png' %}"]; // Update with your icon sources
+        
+            // Get reference to the icon element
+            var icon = document.getElementById("icon");
+        
+            // Initialize index to track current icon
+            var currentIndex = 0;
+        
+            var audio = document.getElementById('music'); 
+            var defaultSong = localStorage.getItem('defaultSong') || "{% static 'music/Rocky Balboa-Theme Song.mp3' %}";
+            audio.src = defaultSong;
+        
+            // Add click event listener to the icon
+            icon.addEventListener("click", function() {
+                // Increment index
+                currentIndex++;
+        
+                // Reset index if it exceeds the length of the array
+                if (currentIndex >= iconSources.length) {
+                    currentIndex = 0;
+                }
+        
+                // If the music is paused, play it
+                if (audio.paused) {
+                    audio.play();
+                    audio.loop = true;
+                } else {
+                    // If it's already playing, pause it and set loop to true
+                    audio.pause();
+                }
+        
+                // Change the src attribute of the icon to the next source
+                icon.src = iconSources[currentIndex];
+            });
+        
+            var lastPlayedTime = parseFloat(localStorage.getItem('lastPlayedTime'));
+        
+            if (lastPlayedTime) {
+                audio.currentTime = lastPlayedTime;
+            }
+        
+            window.onunload = function() {
+                localStorage.setItem('lastPlayedTime', audio.currentTime.toString());
+            };
+        });
+    </script>
+</html>
