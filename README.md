@@ -2,7 +2,13 @@
 
 This is a web application aimed at streamlining personalized exercise routines through user input and artificial intelligence. Users will select their desired body part and specify workout environment and available equipment, triggering ChatGPT to generate 3-5 tailored exercise recommendations accompanied by detailed instructions. Integrating the YouTube API will provide relevant instructional videos for each exercise, enhancing user comprehension and execution. Unlike existing fitness apps with preset databases, this project stands out by dynamically generating exercise suggestions via AI, offering a broader range of options customized to individual preferences and needs.
 
-
+## Colleagues whom I worked with
+### Himanshi Sheth
+- https://github.com/Hks30
+- https://www.linkedin.com/in/himanshi-sheth/
+### Justin Truong
+- https://github.com/tuo65794
+- https://www.linkedin.com/in/justin-truong-456pa/
 
 
 # How to run
